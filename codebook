@@ -1,0 +1,65 @@
+Getting & Cleaning Data Projecter
+
+Seth Berlin
+
+Purpose of the Codebook  - to provide additional detail on variables and code written for the course project of Getting & Cleaning Data
+
+Source Data - A full description of the data used in this project can be found at [The UCI Machine Learning Repository](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones)
+[The source data for this project can be found here.](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)
+
+Data Set Details
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
+
+Attribute Information
+For each record in the dataset it is provided: 
+- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
+- Triaxial Angular velocity from the gyroscope. 
+- A 561-feature vector with time and frequency domain variables. 
+- Its activity label. 
+- An identifier of the subject who carried out the experiment.
+
+Code Description
+
+Section 1. Import the training and the test sets to create one data set.
+
+a.  Set the working directory
+b.  Import files needed by both train and test data sets (tables - activity_Labels, features)
+c.  Import Train Data (tables - x_Train, y_Train, subject_Train)
+d.  Import Test Data (tables -x_Test, y_Test, subject_Test)
+e.  Viewing dimensions were used to determine how to bind tables together
+f.  Binding the tables together
+      bind_test_data + bind_train were binded together using total_Bind
+g.  Assign column names to Total_Bind
+    feature_Columns used the second column of features table (brings in all variable measured)
+    column_Names  adds Subject and Activity information to data in features_Columns
+    column_Names are then used to name columns in Total_Bind
+
+Section 2. Extract only the measurements on the mean and standard deviation for each measurement. 
+
+a.  Create a vector that contains ony mean and stdev columns.  This was done via the grep() function to find only std dev variables (std_Dev_Columns and mean variables (mean_Columns)
+b.  full_Columns creates a vector to include mean, stdev, subject, and activity columns
+c.  Create the first tidy data set by using tidy_Data_Set
+
+Section 3. Use descriptive activity names to name the activities in the data set
+
+Use descriptive activity names to name the activities in the data set by merging final data set with activity_Labels table
+a.  tidy_Data_Set is merged with activity_Labels using Activity ID as the join.
+
+Section 4. Appropriately label the data set with descriptive activity names.
+
+Use gsub function for pattern replacement to clean up the data labels.  Key gsub is replacing Label with Activity.  Remainder of GSUB functions are for readability.
+
+Section 5. Create a second, independent tidy data set with the average of each variable for each activity and each subject. 
+
+Use melt and dcast functions from Reshape2 package to create the 2nd tidy data set.
+a.  tidyMeasures is used to separate measures from ID variables
+b.  tidyMelt melts the tidy_Data_Set by ID variables
+c.  final_Tidy_Activity uses the dcast function to create a dataset for each activity by subject
+d.  write the dataset to tidydata4.txt
+
+A bit of commentary:  I really wish that the lectures included a bit more on the dcast function.  Took me hours to figure out how to use this.
+2nd bit of commentary:  The gsub function is in Week 4 lectures.
+
+
